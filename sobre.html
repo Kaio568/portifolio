@@ -1,238 +1,59 @@
-<body><!-- This is not a responsive example -->
-	<header>
-		<h1>Abra DeFi</h1>
-		<h2>Securely & easily trade 95+ currencies with Abra's all-in-one crypto platform. Making crypto simple and easy. Start now!.<br/><a href="http://caniuse.com/#search=css%20counters"></a></h2>
-	</header>
-	<main>
-		<div class="calculator">
-			<div class="math-signs">
-				<h3 id="plus">+</h3>
-				<h3 id="minus">-</h3>
-			</div>
-			<div class="addition">
-				<div class="row">
-					<input id="seven-plus" type="checkbox"><label for="seven-plus">7</label>
-					<input id="eight-plus" type="checkbox"><label for="eight-plus">8</label>
-					<input id="nine-plus" type="checkbox"><label for="nine-plus">9</label>
-				</div>
-				<div class="row">
-					<input id="four-plus" type="checkbox"><label for="four-plus">4</label>
-					<input id="five-plus" type="checkbox"><label for="five-plus">5</label>
-					<input id="six-plus" type="checkbox"><label for="six-plus">6</label>
-				</div>
-				<div class="row">
-					<input id="one-plus" type="checkbox"><label for="one-plus">1</label>
-					<input id="two-plus" type="checkbox"><label for="two-plus">2</label>
-					<input id="three-plus" type="checkbox"><label for="three-plus">3</label>
-				</div>
-			</div>
-			
-			<div class="subtraction">
-				<div class="row">
-					<input id="seven-minus" type="checkbox"><label for="seven-minus">-7</label>
-					<input id="eight-minus" type="checkbox"><label for="eight-minus">-8</label>
-					<input id="nine-minus" type="checkbox"><label for="nine-minus">-9</label>
-				</div>
-				<div class="row">
-					<input id="four-minus" type="checkbox"><label for="four-minus">-4</label>
-					<input id="five-minus" type="checkbox"><label for="five-minus">-5</label>
-					<input id="six-minus" type="checkbox"><label for="six-minus">-6</label>
-				</div>
-				<div class="row">
-					<input id="one-minus" type="checkbox"><label for="one-minus">-1</label>
-					<input id="two-minus" type="checkbox"><label for="two-minus">-2</label>
-					<input id="three-minus" type="checkbox"><label for="three-minus">-3</label>
-				</div>
-			</div>
-			<div class="display"></div>
-		</div>  
-	</main>
-	<footer>
-		<h2>Some hurdles that may apply are:</h2>
-		<ul>	
-			<li>The displaying element has to be AFTER the counting elements.</li>
-			<li>Only addition and subtraction works.</li>
-			<li>Relies on content generated through pseudo-elements, some screen readers will pick up this content, some won’t.</li>
-		</ul>
-		<h2>Check out more @ <a href="http://www.svenparker.com?utm_source=codepen.io&utm_medium=codepen&utm_content=calculator&utm_campaign=codepen#Home">svenparker.com</a></h2>
-	</footer>
-  /* 1. Reset the counter (and set the name) */
-.calculator {
-	counter-reset: result;
-}
 
-/* 2. Increment the counter */
-#one-plus:checked { counter-increment: result 1; }
-#two-plus:checked { counter-increment: result 2; }
-#three-plus:checked { counter-increment: result 3; }
-#four-plus:checked { counter-increment: result 4; }
-#five-plus:checked { counter-increment: result 5; }
-#six-plus:checked { counter-increment: result 6; }
-#seven-plus:checked { counter-increment: result 7; }
-#eight-plus:checked { counter-increment: result 8; }
-#nine-plus:checked { counter-increment: result 9; }
+	<a href="https://front.codes/" class="logo" target="_blank">
+		<img src="https://assets.codepen.io/1462889/fcy.png" alt="">
+	</a>
 
-#one-minus:checked { counter-increment: result -1; }
-#two-minus:checked { counter-increment: result -2; }
-#three-minus:checked { counter-increment: result -3; }
-#four-minus:checked { counter-increment: result -4; }
-#five-minus:checked { counter-increment: result -5; }
-#six-minus:checked { counter-increment: result -6; }
-#seven-minus:checked { counter-increment: result -7; }
-#eight-minus:checked { counter-increment: result -8; }
-#nine-minus:checked { counter-increment: result -9; }
-
-/* 3. Display the counter */
-.display:after {
-	content: '' counter(result);
-}
-
-
-
-
-
-/* From here on it's only visual stuff */
-body {
-	font-family: 'Nova Mono', monospace;
-	padding: 0;
-	background-color: black;
-	color: white;
-}
-header, footer {
-	width: 100%;
-	max-width: 800px;
-	margin: 40px auto;
-	text-align: center;
-	font-family: 'Montserrat', sans-serif;
-}
-h1 {
-	font-size: 30px;
-}
-h2 {
-	font-size: 18px;
-}
-a {
-	color: #2ECC71;
-	text-decoration: none;
-}
-a:hover {
-	color: #209050;
-}
-.calculator {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-main {
-	width: 440px;
-	height: 375px;
-	margin: 0 auto;
-	background-color: #F6F6F6;
-	color: black;
-	border-radius: 20px;
-	overflow: hidden;
-}
-.math-signs {
-	display: block;
-	overflow: hidden;
-	width: 100%;
-	margin: 0 auto;
-	text-align: center;
-	font-size: 50px;
-	line-height: 50px;
-}
-h3 {
-	margin: 10px 0;
-	color: #111;
-}
-h3#plus, h3#minus {
-	width: 50%;
-	float: left;
-}
-.addition, .subtraction {
-	margin-bottom: 10px;
-}
-.addition {
-	float:left;
-	margin-left: 10px;
-}
-.subtraction {
-	float: right;
-	margin-right: 30px;
-}
-label {
-	font-size: 20px;
-	line-height: 50px;
-	margin: 0 5px 5px 0;
-	display: inline-block;
-	cursor: pointer;
-}
-.subtraction label {
-	margin: 0 10px 5px 0;
-}
-input[type=checkbox] {
-	position: absolute;
-	left: -10000px;
-}
-input[type=checkbox] + label:before {
-	content: '';
-	background-color: #BCC7CC;
-	border-radius: 10px;
-	color: black;
-	cursor: pointer;
-	display: inline-block;
-	font-size: 20px;
-	line-height: 50px;
-	margin: -10px -36px 0 10px;
-	height: 50px;
-	width: 60px;
-	text-align: center;
-	vertical-align: middle;
-	transition: border ease .4s;
-}
-.addition input[type=checkbox] + label:before {
-	content: '';
-	margin: -10px -36px 0 15px;
-}
-.subtraction input[type=checkbox] + label:before {
-	content: '';
-	margin: -10px -40px 0 3px;
-}
-input[type=checkbox]:checked + label:before {
-	content: '';
-	background-color: #37D278;
-}
-
-.display {
-	width: 365px;
-	background-color: #BCC7CC;
-	border-radius: 10px;
-	color: black;
-	display: block;
-	position: relative;
-	clear: both;
-	font-size: 100px;      
-	line-height: 110px;
-	margin: 15px auto;
-	padding: 5px 15px;
-	height: 100px;
-	text-align: right;
-}
-.display:before {
-	content: '=';
-	position: absolute;
-	left: 20px;
-}
-
-ul {
-	width: 50%;
-	margin: 0 auto;
-	padding: 0;
-	list-style-type: cjk-ideographic;
-	text-align: left;
-}
-ul li {
-	margin: 30px 0
-}
-</body>
+	<div class="section">
+		<div class="container">
+			<div class="row full-height justify-content-center">
+				<div class="col-12 text-center align-self-center py-5">
+					<div class="section pb-5 pt-5 pt-sm-2 text-center">
+						<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+			          	<input class="checkbox" type="checkbox"  name="reg-log"/>
+			          	<label for="reg-log"></label>
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+								<div class="card-front">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">Log In</h4>
+											<div class="form-group">
+												<input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
+												<i class="input-icon uil uil-at"></i>
+											</div>	
+											<div class="form-group mt-2">
+												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+												<i class="input-icon uil uil-lock-alt"></i>
+											</div>
+											<a href="#" class="btn mt-4">submit</a>
+                            				<p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
+				      					</div>
+			      					</div>
+			      				</div>
+								<div class="card-back">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">Sign Up</h4>
+											<div class="form-group">
+												<input type="text" name="logname" class="form-style" placeholder="Your Full Name" id="logname" autocomplete="off">
+												<i class="input-icon uil uil-user"></i>
+											</div>	
+											<div class="form-group mt-2">
+												<input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
+												<i class="input-icon uil uil-at"></i>
+											</div>	
+											<div class="form-group mt-2">
+												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+												<i class="input-icon uil uil-lock-alt"></i>
+											</div>
+											<a href="#" class="btn mt-4">submit</a>
+				      					</div>
+			      					</div>
+			      				</div>
+			      			</div>
+			      		</div>
+			      	</div>
+		      	</div>
+	      	</div>
+	    </div>
+	</div>
