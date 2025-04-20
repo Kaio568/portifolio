@@ -1,59 +1,624 @@
-
-	<a href="https://front.codes/" class="logo" target="_blank">
-		<img src="https://assets.codepen.io/1462889/fcy.png" alt="">
-	</a>
-
-	<div class="section">
-		<div class="container">
-			<div class="row full-height justify-content-center">
-				<div class="col-12 text-center align-self-center py-5">
-					<div class="section pb-5 pt-5 pt-sm-2 text-center">
-						<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
-			          	<input class="checkbox" type="checkbox"  name="reg-log"/>
-			          	<label for="reg-log"></label>
-						<div class="card-3d-wrap mx-auto">
-							<div class="card-3d-wrapper">
-								<div class="card-front">
-									<div class="center-wrap">
-										<div class="section text-center">
-											<h4 class="mb-4 pb-3">Log In</h4>
-											<div class="form-group">
-												<input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
-												<i class="input-icon uil uil-at"></i>
-											</div>	
-											<div class="form-group mt-2">
-												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
-												<i class="input-icon uil uil-lock-alt"></i>
-											</div>
-											<a href="#" class="btn mt-4">submit</a>
-                            				<p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
-				      					</div>
-			      					</div>
-			      				</div>
-								<div class="card-back">
-									<div class="center-wrap">
-										<div class="section text-center">
-											<h4 class="mb-4 pb-3">Sign Up</h4>
-											<div class="form-group">
-												<input type="text" name="logname" class="form-style" placeholder="Your Full Name" id="logname" autocomplete="off">
-												<i class="input-icon uil uil-user"></i>
-											</div>	
-											<div class="form-group mt-2">
-												<input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
-												<i class="input-icon uil uil-at"></i>
-											</div>	
-											<div class="form-group mt-2">
-												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
-												<i class="input-icon uil uil-lock-alt"></i>
-											</div>
-											<a href="#" class="btn mt-4">submit</a>
-				      					</div>
-			      					</div>
-			      				</div>
-			      			</div>
-			      		</div>
-			      	</div>
-		      	</div>
-	      	</div>
-	    </div>
-	</div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris Futurista - Intergalactic</title>
+  <style>
+    /* Reset global */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* Variáveis de Cores e Estilo Futurista */
+    :root {
+      --bg-color: #0d0d1a; /* Fundo do espaço */
+      --neon-blue: #00e6ff;
+      --neon-pink: #ff00e6;
+      --neon-green: #39ff14;
+      --neon-yellow: #ffff33;
+      --neon-purple: #8a2be2;
+      --container-bg: rgba(15, 15, 30, 0.85);
+      --button-bg: rgba(0, 230, 255, 0.2);
+      --button-hover: rgba(0, 230, 255, 0.4);
+      --text-color: #e0e0ff;
+      --anim-duration: 0.3s;
+    }
+    
+    /* Fonte futurista (pode ser importada do Google Fonts, se desejar) */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* Animação de campo de estrelas intergalácticas */
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      animation: moveStars 60s linear infinite;
+      opacity: 0.5;
+    }
+    
+    @keyframes moveStars {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-50%, -50%); }
+    }
+    
+    /* Container do Jogo com borda neon */
+    .game-container {
+      position: relative;
+      z-index: 2;
+      background-color: var(--container-bg);
+      padding: 20px;
+      border: 2px solid var(--neon-blue);
+      border-radius: 20px;
+      box-shadow: 0 0 20px var(--neon-blue);
+      max-width: 500px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Cabeçalho e Título */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .title {
+      font-size: 32px;
+      color: var(--neon-pink);
+      text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+      margin-bottom: 10px;
+    }
+    
+    .score-level {
+      font-size: 18px;
+      color: var(--neon-green);
+      text-shadow: 0 0 5px var(--neon-green);
+      margin-bottom: 10px;
+    }
+    
+    /* Tabuleiro de Jogo com tema espacial */
+    #board {
+      border: 2px solid var(--neon-blue);
+      border-radius: 10px;
+      background-color: #000;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(20, 1fr);
+      gap: 2px;
+      padding: 5px;
+      width: 100%;
+      max-width: 300px;
+      aspect-ratio: 10 / 20;
+      margin-bottom: 20px;
+    }
+    
+    .cell {
+      background-color: #111;
+      border: 1px solid #222;
+      border-radius: 4px;
+      transition: background-color var(--anim-duration) ease, transform var(--anim-duration) ease;
+    }
+    
+    .ghost {
+      opacity: 0.2;
+    }
+    
+    /* Área da Próxima Peça (Nave Espacial) */
+    .next-piece {
+      text-align: center;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    
+    .next-piece h3 {
+      margin-bottom: 10px;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 10px var(--neon-yellow);
+    }
+    
+    #nextPiece {
+      border: 2px dashed var(--neon-blue);
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 2px;
+      margin: 0 auto;
+      width: 120px;
+      height: 120px;
+      padding: 5px;
+    }
+    
+    /* Controles com efeitos neon */
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+    
+    button {
+      background-color: var(--button-bg);
+      border: 1px solid var(--neon-blue);
+      padding: 15px;
+      border-radius: 10px;
+      color: var(--text-color);
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      outline: none;
+      box-shadow: 0 0 5px var(--neon-blue);
+    }
+    
+    button:hover {
+      background-color: var(--button-hover);
+      transform: scale(1.05);
+    }
+    
+    button:active {
+      transform: scale(0.95);
+    }
+    
+    /* Tela de Game Over com efeito futurista */
+    .game-over {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    .game-over-content {
+      background-color: var(--container-bg);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      border: 2px solid var(--neon-pink);
+      box-shadow: 0 0 20px var(--neon-pink);
+      animation: popIn 0.5s ease;
+    }
+    
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .game-over h2 {
+      color: var(--neon-yellow);
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px var(--neon-yellow);
+    }
+    
+    /* Responsividade para Smartphones */
+    @media (max-width: 480px) {
+      .game-container {
+        padding: 15px;
+      }
+      .title {
+        font-size: 28px;
+      }
+      .score-level {
+        font-size: 16px;
+      }
+      #board {
+        max-width: 260px;
+      }
+      .controls {
+        max-width: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fundo animado com estrelas -->
+  <div class="stars"></div>
+  
+  <div class="game-container">
+    <div class="header">
+      <h1 class="title">Tetris Futurista 🚀</h1>
+      <div class="score-level">
+        Pontuação: <span id="score">0</span> | Nível: <span id="level">1</span>
+      </div>
+    </div>
+    <div id="board"></div>
+    <div class="next-piece">
+      <h3>Próxima Nave</h3>
+      <div id="nextPiece"></div>
+    </div>
+    <div class="controls">
+      <button id="leftBtn">⬅️</button>
+      <button id="downBtn">⬇️</button>
+      <button id="rightBtn">➡️</button>
+      <button id="rotateBtn">🔄</button>
+      <button id="pauseBtn">⏸️</button>
+      <button id="resetBtn">🔄 Novo Jogo</button>
+    </div>
+  </div>
+  
+  <div class="game-over" id="gameOver">
+    <div class="game-over-content">
+      <h2>Game Over!</h2>
+      <button id="gameOverReset">Jogar Novamente</button>
+    </div>
+  </div>
+  
+  <script>
+    'use strict';
+    /********************
+     * CONFIGURAÇÕES DO JOGO
+     ********************/
+    const BOARD_WIDTH = 10;
+    const BOARD_HEIGHT = 20;
+    const INITIAL_SPEED = 1000;      // velocidade inicial em milissegundos
+    const SPEED_INCREMENT = 50;      // diminuição do intervalo a cada nível
+    const LINES_PER_LEVEL = 5;       // linhas para subir de nível
+  
+    const COLORS = {
+      'I': '#00e6ff',
+      'O': '#ff00e6',
+      'T': '#39ff14',
+      'S': '#ffff33',
+      'Z': '#8a2be2',
+      'J': '#00e6ff',
+      'L': '#ff00e6',
+      empty: '#000'
+    };
+  
+    const SHAPES = {
+      I: [[1, 1, 1, 1]],
+      O: [[1, 1], [1, 1]],
+      T: [[0, 1, 0], [1, 1, 1]],
+      S: [[0, 1, 1], [1, 1, 0]],
+      Z: [[1, 1, 0], [0, 1, 1]],
+      J: [[1, 0, 0], [1, 1, 1]],
+      L: [[0, 0, 1], [1, 1, 1]]
+    };
+  
+    /********************
+     * VARIÁVEIS DE ESTADO
+     ********************/
+    let board = [];
+    let boardCells = []; // Elementos DOM para cada célula do tabuleiro
+    let currentPiece = null;
+    let nextPiece = null;
+    let score = 0;
+    let level = 1;
+    let linesClearedTotal = 0;
+    let gameOver = false;
+    let isPaused = false;
+    let gameSpeed = INITIAL_SPEED;
+    let gameLoopId = null;
+  
+    /********************
+     * FUNÇÕES DO JOGO
+     ********************/
+  
+    // Cria o tabuleiro (estrutura lógica e visual)
+    function createBoard() {
+      const boardElement = document.getElementById('board');
+      boardElement.innerHTML = '';
+      board = [];
+      boardCells = [];
+      for (let y = 0; y < BOARD_HEIGHT; y++) {
+        const row = [];
+        for (let x = 0; x < BOARD_WIDTH; x++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.style.backgroundColor = COLORS.empty;
+          boardElement.appendChild(cell);
+          row.push('empty');
+          boardCells.push(cell);
+        }
+        board.push(row);
+      }
+    }
+  
+    // Atualiza a renderização do tabuleiro, incluindo a peça atual, a peça fantasma e o fundo
+    function updateBoard() {
+      // Renderiza o tabuleiro estático
+      let index = 0;
+      for (let y = 0; y < BOARD_HEIGHT; y++) {
+        for (let x = 0; x < BOARD_WIDTH; x++) {
+          boardCells[index].style.backgroundColor = COLORS[board[y][x]];
+          boardCells[index].classList.remove('ghost');
+          index++;
+        }
+      }
+      // Renderiza a peça fantasma (ghost piece)
+      const ghostY = getGhostPosition();
+      if (currentPiece) {
+        currentPiece.shape.forEach((row, dy) => {
+          row.forEach((cell, dx) => {
+            if (cell === 1) {
+              const x = currentPiece.x + dx;
+              const y = ghostY + dy;
+              if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
+                const cellIndex = y * BOARD_WIDTH + x;
+                boardCells[cellIndex].style.backgroundColor = COLORS[currentPiece.type];
+                boardCells[cellIndex].classList.add('ghost');
+              }
+            }
+          });
+        });
+      }
+      // Renderiza a peça atual
+      if (currentPiece) {
+        currentPiece.shape.forEach((row, dy) => {
+          row.forEach((cell, dx) => {
+            if (cell === 1) {
+              const x = currentPiece.x + dx;
+              const y = currentPiece.y + dy;
+              if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
+                const cellIndex = y * BOARD_WIDTH + x;
+                boardCells[cellIndex].style.backgroundColor = COLORS[currentPiece.type];
+                boardCells[cellIndex].classList.remove('ghost');
+              }
+            }
+          });
+        });
+      }
+    }
+  
+    // Calcula a posição “fantasma” da peça (até onde ela pode cair)
+    function getGhostPosition() {
+      let ghostY = currentPiece.y;
+      while (isValidMove(0, ghostY - currentPiece.y + 1)) {
+        ghostY++;
+      }
+      return ghostY;
+    }
+  
+    // Cria uma nova peça (opcionalmente passando o tipo desejado)
+    function createPiece(type = null) {
+      const pieces = Object.keys(SHAPES);
+      const chosenType = type || pieces[Math.floor(Math.random() * pieces.length)];
+      return {
+        type: chosenType,
+        shape: SHAPES[chosenType],
+        x: Math.floor(BOARD_WIDTH / 2) - Math.floor(SHAPES[chosenType][0].length / 2),
+        y: 0
+      };
+    }
+  
+    // Atualiza a visualização da próxima peça (preview)
+    function updateNextPiece() {
+      const nextPieceElement = document.getElementById('nextPiece');
+      nextPieceElement.innerHTML = '';
+      // Cria uma grid 4x4 para desenhar a peça
+      for (let i = 0; i < 16; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.style.backgroundColor = COLORS.empty;
+        nextPieceElement.appendChild(cell);
+      }
+      // Desenha a peça na grid
+      nextPiece.shape.forEach((row, dy) => {
+        row.forEach((cell, dx) => {
+          if (cell === 1) {
+            const index = dy * 4 + dx;
+            nextPieceElement.children[index].style.backgroundColor = COLORS[nextPiece.type];
+          }
+        });
+      });
+    }
+  
+    // Verifica se a peça pode se mover para a posição desejada
+    function isValidMove(offsetX, offsetY) {
+      return currentPiece.shape.every((row, dy) => {
+        return row.every((cell, dx) => {
+          if (cell === 0) return true;
+          const newX = currentPiece.x + dx + offsetX;
+          const newY = currentPiece.y + dy + offsetY;
+          if (newX < 0 || newX >= BOARD_WIDTH || newY >= BOARD_HEIGHT) return false;
+          if (newY >= 0 && board[newY][newX] !== 'empty') return false;
+          return true;
+        });
+      });
+    }
+  
+    // Move a peça (se possível) e atualiza a renderização
+    function movePiece(offsetX, offsetY) {
+      if (!isPaused && !gameOver && isValidMove(offsetX, offsetY)) {
+        currentPiece.x += offsetX;
+        currentPiece.y += offsetY;
+        updateBoard();
+        return true;
+      }
+      return false;
+    }
+  
+    // Rotaciona a peça atual
+    function rotatePiece() {
+      if (isPaused || gameOver) return;
+      const rotated = currentPiece.shape[0].map((_, i) =>
+        currentPiece.shape.map(row => row[i]).reverse()
+      );
+      const oldShape = currentPiece.shape;
+      currentPiece.shape = rotated;
+      if (!isValidMove(0, 0)) {
+        currentPiece.shape = oldShape;
+      }
+      updateBoard();
+    }
+  
+    // Trava a peça no tabuleiro (quando não pode descer mais)
+    function lockPiece() {
+      currentPiece.shape.forEach((row, dy) => {
+        row.forEach((cell, dx) => {
+          if (cell === 1) {
+            const x = currentPiece.x + dx;
+            const y = currentPiece.y + dy;
+            if (y >= 0) {
+              board[y][x] = currentPiece.type;
+            }
+          }
+        });
+      });
+      clearLines();
+      spawnNextPiece();
+      updateBoard();
+    }
+  
+    // Verifica e limpa as linhas completas, atualizando a pontuação e o nível
+    function clearLines() {
+      let linesCleared = 0;
+      for (let y = BOARD_HEIGHT - 1; y >= 0; y--) {
+        if (board[y].every(cell => cell !== 'empty')) {
+          board.splice(y, 1);
+          board.unshift(Array(BOARD_WIDTH).fill('empty'));
+          linesCleared++;
+          y++; // reverificar a mesma linha (pois as linhas caem)
+        }
+      }
+      if (linesCleared > 0) {
+        score += linesCleared * 100;
+        linesClearedTotal += linesCleared;
+        // Aumenta o nível a cada número definido de linhas limpas
+        if (linesClearedTotal >= level * LINES_PER_LEVEL) {
+          level++;
+          gameSpeed = Math.max(100, INITIAL_SPEED - (level - 1) * SPEED_INCREMENT);
+          document.getElementById('level').textContent = level;
+        }
+        document.getElementById('score').textContent = score;
+      }
+    }
+  
+    // Exibe a tela de Game Over
+    function showGameOver() {
+      document.getElementById('gameOver').style.display = 'flex';
+    }
+  
+    // Alterna o estado de pausa
+    function togglePause() {
+      if (gameOver) return;
+      isPaused = !isPaused;
+      const pauseBtn = document.getElementById('pauseBtn');
+      pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
+    }
+  
+    // Reinicia o jogo e todas as variáveis de estado
+    function resetGame() {
+      clearTimeout(gameLoopId);
+      createBoard();
+      score = 0;
+      level = 1;
+      linesClearedTotal = 0;
+      gameSpeed = INITIAL_SPEED;
+      document.getElementById('score').textContent = score;
+      document.getElementById('level').textContent = level;
+      gameOver = false;
+      isPaused = false;
+      document.getElementById('gameOver').style.display = 'none';
+      document.getElementById('pauseBtn').textContent = '⏸️';
+      currentPiece = createPiece();
+      nextPiece = createPiece();
+      updateNextPiece();
+      updateBoard();
+      gameLoop();
+    }
+  
+    // Posiciona a próxima peça como a atual e gera uma nova próxima peça
+    function spawnNextPiece() {
+      currentPiece = nextPiece;
+      currentPiece.x = Math.floor(BOARD_WIDTH / 2) - Math.floor(currentPiece.shape[0].length / 2);
+      currentPiece.y = 0;
+      nextPiece = createPiece();
+      updateNextPiece();
+      // Se a nova peça não couber, encerra o jogo
+      if (!isValidMove(0, 0)) {
+        gameOver = true;
+        showGameOver();
+      }
+    }
+  
+    // Loop do jogo – utiliza setTimeout para permitir o ajuste dinâmico da velocidade
+    function gameLoop() {
+      if (gameOver) return;
+      if (!isPaused) {
+        if (!movePiece(0, 1)) {
+          lockPiece();
+        }
+      }
+      updateBoard();
+      gameLoopId = setTimeout(gameLoop, gameSpeed);
+    }
+  
+    // Configura os eventos de controle (botões e teclado)
+    function setupControls() {
+      document.getElementById('leftBtn').addEventListener('click', () => movePiece(-1, 0));
+      document.getElementById('rightBtn').addEventListener('click', () => movePiece(1, 0));
+      document.getElementById('downBtn').addEventListener('click', () => {
+        if (!movePiece(0, 1)) lockPiece();
+      });
+      document.getElementById('rotateBtn').addEventListener('click', rotatePiece);
+      document.getElementById('pauseBtn').addEventListener('click', togglePause);
+      document.getElementById('resetBtn').addEventListener('click', resetGame);
+      document.getElementById('gameOverReset').addEventListener('click', resetGame);
+      // Eventos de teclado
+      document.addEventListener('keydown', (e) => {
+        if (gameOver) return;
+        switch (e.key) {
+          case 'ArrowLeft':
+            movePiece(-1, 0);
+            break;
+          case 'ArrowRight':
+            movePiece(1, 0);
+            break;
+          case 'ArrowDown':
+            if (!movePiece(0, 1)) lockPiece();
+            break;
+          case 'ArrowUp':
+            rotatePiece();
+            break;
+          case ' ':
+            e.preventDefault();
+            togglePause();
+            break;
+        }
+      });
+    }
+  
+    /********************
+     * INICIALIZAÇÃO DO JOGO
+     ********************/
+    // Aguarda o DOM carregar para configurar os controles e iniciar o jogo
+    document.addEventListener('DOMContentLoaded', () => {
+      setupControls();
+      resetGame();
+    });
+  </script>
+</body>
+</html>
