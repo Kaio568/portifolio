@@ -1,624 +1,411 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TIGRINHO  TA PAGANDO</title>
-  <style>
-    /* Reset global */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    /* Variáveis de Cores e Estilo Futurista */
-    :root {
-      --bg-color: #0d0d1a; /* Fundo do espaço */
-      --neon-blue: #00e6ff;
-      --neon-pink: #ff00e6;
-      --neon-green: #39ff14;
-      --neon-yellow: #ffff33;
-      --neon-purple: #8a2be2;
-      --container-bg: rgba(15, 15, 30, 0.85);
-      --button-bg: rgba(0, 230, 255, 0.2);
-      --button-hover: rgba(0, 230, 255, 0.4);
-      --text-color: #e0e0ff;
-      --anim-duration: 0.3s;
-    }
-    
-    /* Fonte futurista (pode ser importada do Google Fonts, se desejar) */
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-    
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    /* Animação de campo de estrelas intergalácticas */
-    .stars {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 200%;
-      height: 200%;
-      background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-      animation: moveStars 60s linear infinite;
-      opacity: 0.5;
-    }
-    
-    @keyframes moveStars {
-      from { transform: translate(0, 0); }
-      to { transform: translate(-50%, -50%); }
-    }
-    
-    /* Container do Jogo com borda neon */
-    .game-container {
-      position: relative;
-      z-index: 2;
-      background-color: var(--container-bg);
-      padding: 20px;
-      border: 2px solid var(--neon-blue);
-      border-radius: 20px;
-      box-shadow: 0 0 20px var(--neon-blue);
-      max-width: 500px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: fadeIn 1s ease;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    
-    /* Cabeçalho e Título */
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    
-    .title {
-      font-size: 32px;
-      color: var(--neon-pink);
-      text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
-      margin-bottom: 10px;
-    }
-    
-    .score-level {
-      font-size: 18px;
-      color: var(--neon-green);
-      text-shadow: 0 0 5px var(--neon-green);
-      margin-bottom: 10px;
-    }
-    
-    /* Tabuleiro de Jogo com tema espacial */
-    #board {
-      border: 2px solid var(--neon-blue);
-      border-radius: 10px;
-      background-color: #000;
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      grid-template-rows: repeat(20, 1fr);
-      gap: 2px;
-      padding: 5px;
-      width: 100%;
-      max-width: 300px;
-      aspect-ratio: 10 / 20;
-      margin-bottom: 20px;
-    }
-    
-    .cell {
-      background-color: #111;
-      border: 1px solid #222;
-      border-radius: 4px;
-      transition: background-color var(--anim-duration) ease, transform var(--anim-duration) ease;
-    }
-    
-    .ghost {
-      opacity: 0.2;
-    }
-    
-    /* Área da Próxima Peça (Nave Espacial) */
-    .next-piece {
-      text-align: center;
-      margin-bottom: 20px;
-      width: 100%;
-    }
-    
-    .next-piece h3 {
-      margin-bottom: 10px;
-      color: var(--neon-yellow);
-      text-shadow: 0 0 10px var(--neon-yellow);
-    }
-    
-    #nextPiece {
-      border: 2px dashed var(--neon-blue);
-      border-radius: 10px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(4, 1fr);
-      gap: 2px;
-      margin: 0 auto;
-      width: 120px;
-      height: 120px;
-      padding: 5px;
-    }
-    
-    /* Controles com efeitos neon */
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      width: 100%;
-      max-width: 300px;
-      margin-bottom: 20px;
-    }
-    
-    button {
-      background-color: var(--button-bg);
-      border: 1px solid var(--neon-blue);
-      padding: 15px;
-      border-radius: 10px;
-      color: var(--text-color);
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.2s ease;
-      outline: none;
-      box-shadow: 0 0 5px var(--neon-blue);
-    }
-    
-    button:hover {
-      background-color: var(--button-hover);
-      transform: scale(1.05);
-    }
-    
-    button:active {
-      transform: scale(0.95);
-    }
-    
-    /* Tela de Game Over com efeito futurista */
-    .game-over {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-    
-    .game-over-content {
-      background-color: var(--container-bg);
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      border: 2px solid var(--neon-pink);
-      box-shadow: 0 0 20px var(--neon-pink);
-      animation: popIn 0.5s ease;
-    }
-    
-    @keyframes popIn {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    
-    .game-over h2 {
-      color: var(--neon-yellow);
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px var(--neon-yellow);
-    }
-    
-    /* Responsividade para Smartphones */
-    @media (max-width: 480px) {
-      .game-container {
-        padding: 15px;
-      }
-      .title {
-        font-size: 28px;
-      }
-      .score-level {
-        font-size: 16px;
-      }
-      #board {
-        max-width: 260px;
-      }
-      .controls {
-        max-width: 260px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <!-- Fundo animado com estrelas -->
-  <div class="stars"></div>
-  
-  <div class="game-container">
-    <div class="header">
-      <h1 class="title">Tetris Futurista 🚀</h1>
-      <div class="score-level">
-        Pontuação: <span id="score">0</span> | Nível: <span id="level">1</span>
-      </div>
+<div id="controls-container">
+  <button id="toggle-controls">Controls</button>
+  <button id="toggle-fullscreen">Full Screen</button>
+  <div id="controls">
+    <div class="control-group">
+      <label for="colorScheme">Colors:</label>
+      <select id="colorScheme">
+        <option value="rainbow">Rainbow</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="monochrome">Monochrome</option>
+      </select>
     </div>
-    <div id="board"></div>
-    <div class="next-piece">
-      <h3>Próxima Nave</h3>
-      <div id="nextPiece"></div>
+    <div class="control-group">
+      <label for="particleSize">Size:</label>
+      <input type="range" id="particleSize" min="1" max="20" value="10">
+      <span id="particleSizeValue">10</span>
     </div>
-    <div class="controls">
-      <button id="leftBtn">⬅️</button>
-      <button id="downBtn">⬇️</button>
-      <button id="rightBtn">➡️</button>
-      <button id="rotateBtn">🔄</button>
-      <button id="pauseBtn">⏸️</button>
-      <button id="resetBtn">🔄 Novo Jogo</button>
+    <div class="control-group">
+      <label for="particleCount">Particles:</label>
+      <input type="range" id="particleCount" min="10" max="100" value="32">
+      <span id="particleCountValue">32</span>
+    </div>
+    <div class="control-group">
+      <label for="speed">Speed:</label>
+      <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1">
+      <span id="speedValue">1</span>
+    </div>
+    <div class="control-group">
+      <label for="mouseInfluence">Mouse Follow:</label>
+      <input type="range" id="mouseInfluence" min="0" max="100" value="50">
+      <span id="mouseInfluenceValue">50</span>
     </div>
   </div>
-  
-  <div class="game-over" id="gameOver">
-    <div class="game-over-content">
-      <h2>Game Over!</h2>
-      <button id="gameOverReset">Jogar Novamente</button>
-    </div>
-  </div>
-  
-  <script>
-    'use strict';
-    /********************
-     * CONFIGURAÇÕES DO JOGO
-     ********************/
-    const BOARD_WIDTH = 10;
-    const BOARD_HEIGHT = 20;
-    const INITIAL_SPEED = 1000;      // velocidade inicial em milissegundos
-    const SPEED_INCREMENT = 50;      // diminuição do intervalo a cada nível
-    const LINES_PER_LEVEL = 5;       // linhas para subir de nível
-  
-    const COLORS = {
-      'I': '#00e6ff',
-      'O': '#ff00e6',
-      'T': '#39ff14',
-      'S': '#ffff33',
-      'Z': '#8a2be2',
-      'J': '#00e6ff',
-      'L': '#ff00e6',
-      empty: '#000'
-    };
-  
-    const SHAPES = {
-      I: [[1, 1, 1, 1]],
-      O: [[1, 1], [1, 1]],
-      T: [[0, 1, 0], [1, 1, 1]],
-      S: [[0, 1, 1], [1, 1, 0]],
-      Z: [[1, 1, 0], [0, 1, 1]],
-      J: [[1, 0, 0], [1, 1, 1]],
-      L: [[0, 0, 1], [1, 1, 1]]
-    };
-  
-    /********************
-     * VARIÁVEIS DE ESTADO
-     ********************/
-    let board = [];
-    let boardCells = []; // Elementos DOM para cada célula do tabuleiro
-    let currentPiece = null;
-    let nextPiece = null;
-    let score = 0;
-    let level = 1;
-    let linesClearedTotal = 0;
-    let gameOver = false;
-    let isPaused = false;
-    let gameSpeed = INITIAL_SPEED;
-    let gameLoopId = null;
-  
-    /********************
-     * FUNÇÕES DO JOGO
-     ********************/
-  
-    // Cria o tabuleiro (estrutura lógica e visual)
-    function createBoard() {
-      const boardElement = document.getElementById('board');
-      boardElement.innerHTML = '';
-      board = [];
-      boardCells = [];
-      for (let y = 0; y < BOARD_HEIGHT; y++) {
-        const row = [];
-        for (let x = 0; x < BOARD_WIDTH; x++) {
-          const cell = document.createElement('div');
-          cell.className = 'cell';
-          cell.style.backgroundColor = COLORS.empty;
-          boardElement.appendChild(cell);
-          row.push('empty');
-          boardCells.push(cell);
-        }
-        board.push(row);
-      }
+</div>
+
+<canvas id="c"></canvas>
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #000;
+  font-family: "Archivo Black", sans-serif;
+  color: white;
+}
+
+#c {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#controls-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+#toggle-controls {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  backdrop-filter: blur(5px);
+}
+
+#controls {
+  background: rgba(100, 100, 100, 0.2);
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 300px;
+  backdrop-filter: blur(5px);
+  display: block;
+}
+
+.control-group {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.control-group label {
+  width: 100px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.control-group input[type="range"] {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.control-group span {
+  width: 30px;
+  text-align: right;
+  font-size: 14px;
+}
+
+.control-group select {
+  flex-grow: 1;
+  padding: 5px;
+  border-radius: 4px;
+  background: #333;
+  color: white;
+  border: none;
+}
+
+.heart-outline {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 360px;
+  height: 320px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 2;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#intro-controls {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#intro-controls h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+#intro-controls ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#intro-controls li {
+  margin-bottom: 5px;
+  font-size: 1em;
+}
+
+#toggle-fullscreen {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
+
+@media (max-width: 600px) {
+  #controls-container {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    max-width: none;
+  }
+
+  .control-group label {
+    width: 80px;
+    font-size: 12px;
+  }
+}
+// Configuration
+const config = {
+    particleCount: 32,
+    speed: 1,
+    colorScheme: 'rainbow',
+    mouseInfluence: 50,
+    showHeartOutline: true,
+    particleSize: 10
+};
+
+// Canvas setup
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let canvasWidth = canvas.width = window.innerWidth;
+let canvasHeight = canvas.height = window.innerHeight;
+
+// Animation state
+let trails = [];
+let heartPath = [];
+let mouseX = canvasWidth / 2;
+let mouseY = canvasHeight / 2;
+let mouseActive = false;
+let animationRunning = false;
+
+// Initialize heart path points (fixed formula)
+function initHeartPath() {
+    heartPath = [];
+    const PI2 = 6.28318; // 2*PI approximation
+    const steps = Math.max(32, config.particleCount);
+    
+    for (let i = 0; i < steps; i++) {
+        const t = (i / steps) * PI2;
+        heartPath.push([
+            canvasWidth/2 + 180 * Math.pow(Math.sin(t), 3),
+            canvasHeight/2 + 10 * (-(15 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)))
+        ]);
     }
-  
-    // Atualiza a renderização do tabuleiro, incluindo a peça atual, a peça fantasma e o fundo
-    function updateBoard() {
-      // Renderiza o tabuleiro estático
-      let index = 0;
-      for (let y = 0; y < BOARD_HEIGHT; y++) {
-        for (let x = 0; x < BOARD_WIDTH; x++) {
-          boardCells[index].style.backgroundColor = COLORS[board[y][x]];
-          boardCells[index].classList.remove('ghost');
-          index++;
-        }
-      }
-      // Renderiza a peça fantasma (ghost piece)
-      const ghostY = getGhostPosition();
-      if (currentPiece) {
-        currentPiece.shape.forEach((row, dy) => {
-          row.forEach((cell, dx) => {
-            if (cell === 1) {
-              const x = currentPiece.x + dx;
-              const y = ghostY + dy;
-              if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
-                const cellIndex = y * BOARD_WIDTH + x;
-                boardCells[cellIndex].style.backgroundColor = COLORS[currentPiece.type];
-                boardCells[cellIndex].classList.add('ghost');
-              }
+}
+
+// Initialize particles with proper bounds checking
+function initParticles() {
+    trails = [];
+    if (heartPath.length === 0) initHeartPath();
+
+    for (let i = 0; i < config.particleCount; i++) {
+        const particles = [];
+        const x = Math.random() * canvasWidth;
+        const y = Math.random() * canvasHeight;
+
+        for (let k = 0; k < config.particleCount; k++) {
+            // Color generation
+            let hue, saturation = Math.random() * 40 + 60;
+            let brightness = Math.random() * 60 + 20;
+            
+            switch(config.colorScheme) {
+                case 'red': hue = Math.random() * 20 + 350; break;
+                case 'blue': hue = Math.random() * 20 + 200; break;
+                case 'green': hue = Math.random() * 20 + 100; break;
+                case 'monochrome': hue = 0; saturation = 0; break;
+                default: hue = i/config.particleCount * 360; // rainbow
             }
-          });
-        });
-      }
-      // Renderiza a peça atual
-      if (currentPiece) {
-        currentPiece.shape.forEach((row, dy) => {
-          row.forEach((cell, dx) => {
-            if (cell === 1) {
-              const x = currentPiece.x + dx;
-              const y = currentPiece.y + dy;
-              if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
-                const cellIndex = y * BOARD_WIDTH + x;
-                boardCells[cellIndex].style.backgroundColor = COLORS[currentPiece.type];
-                boardCells[cellIndex].classList.remove('ghost');
-              }
+
+            particles.push({
+                x, y,
+                velX: 0, velY: 0,
+                radius: ((1 - k/config.particleCount) + 1) * config.particleSize/2,
+                speed: Math.random() + 1,
+                targetIndex: Math.floor(Math.random() * heartPath.length),
+                direction: i % 2 * 2 - 1,
+                friction: Math.random() * 0.2 + 0.7,
+                color: `hsla(${hue},${saturation}%,${brightness}%,0.1)`
+            });
+        }
+        trails.push(particles);
+    }
+}
+
+// Render a single particle
+function renderParticle(particle) {
+    ctx.fillStyle = particle.color;
+    ctx.beginPath();
+    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+// Main animation loop with robust error handling
+function animationLoop() {
+    if (!animationRunning) return; // Stop the animation if not running
+
+    try {
+        // Clear with trail effect
+        ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+        trails.forEach(trail => {
+            if (!trail || !trail.length) return;
+            
+            const leader = trail[0];
+            const target = heartPath[leader.targetIndex % heartPath.length];
+            if (!target) return;
+
+            // Mouse influence
+            if (mouseActive && config.mouseInfluence > 0) {
+                const dx = mouseX - leader.x;
+                const dy = mouseY - leader.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                
+                if (dist < 300) {
+                    const force = (1 - dist/300) * (config.mouseInfluence/20);
+                    leader.velX += dx/dist * force;
+                    leader.velY += dy/dist * force;
+                }
             }
-          });
-        });
-      }
-    }
-  
-    // Calcula a posição “fantasma” da peça (até onde ela pode cair)
-    function getGhostPosition() {
-      let ghostY = currentPiece.y;
-      while (isValidMove(0, ghostY - currentPiece.y + 1)) {
-        ghostY++;
-      }
-      return ghostY;
-    }
-  
-    // Cria uma nova peça (opcionalmente passando o tipo desejado)
-    function createPiece(type = null) {
-      const pieces = Object.keys(SHAPES);
-      const chosenType = type || pieces[Math.floor(Math.random() * pieces.length)];
-      return {
-        type: chosenType,
-        shape: SHAPES[chosenType],
-        x: Math.floor(BOARD_WIDTH / 2) - Math.floor(SHAPES[chosenType][0].length / 2),
-        y: 0
-      };
-    }
-  
-    // Atualiza a visualização da próxima peça (preview)
-    function updateNextPiece() {
-      const nextPieceElement = document.getElementById('nextPiece');
-      nextPieceElement.innerHTML = '';
-      // Cria uma grid 4x4 para desenhar a peça
-      for (let i = 0; i < 16; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.style.backgroundColor = COLORS.empty;
-        nextPieceElement.appendChild(cell);
-      }
-      // Desenha a peça na grid
-      nextPiece.shape.forEach((row, dy) => {
-        row.forEach((cell, dx) => {
-          if (cell === 1) {
-            const index = dy * 4 + dx;
-            nextPieceElement.children[index].style.backgroundColor = COLORS[nextPiece.type];
-          }
-        });
-      });
-    }
-  
-    // Verifica se a peça pode se mover para a posição desejada
-    function isValidMove(offsetX, offsetY) {
-      return currentPiece.shape.every((row, dy) => {
-        return row.every((cell, dx) => {
-          if (cell === 0) return true;
-          const newX = currentPiece.x + dx + offsetX;
-          const newY = currentPiece.y + dy + offsetY;
-          if (newX < 0 || newX >= BOARD_WIDTH || newY >= BOARD_HEIGHT) return false;
-          if (newY >= 0 && board[newY][newX] !== 'empty') return false;
-          return true;
-        });
-      });
-    }
-  
-    // Move a peça (se possível) e atualiza a renderização
-    function movePiece(offsetX, offsetY) {
-      if (!isPaused && !gameOver && isValidMove(offsetX, offsetY)) {
-        currentPiece.x += offsetX;
-        currentPiece.y += offsetY;
-        updateBoard();
-        return true;
-      }
-      return false;
-    }
-  
-    // Rotaciona a peça atual
-    function rotatePiece() {
-      if (isPaused || gameOver) return;
-      const rotated = currentPiece.shape[0].map((_, i) =>
-        currentPiece.shape.map(row => row[i]).reverse()
-      );
-      const oldShape = currentPiece.shape;
-      currentPiece.shape = rotated;
-      if (!isValidMove(0, 0)) {
-        currentPiece.shape = oldShape;
-      }
-      updateBoard();
-    }
-  
-    // Trava a peça no tabuleiro (quando não pode descer mais)
-    function lockPiece() {
-      currentPiece.shape.forEach((row, dy) => {
-        row.forEach((cell, dx) => {
-          if (cell === 1) {
-            const x = currentPiece.x + dx;
-            const y = currentPiece.y + dy;
-            if (y >= 0) {
-              board[y][x] = currentPiece.type;
+
+            // Move toward target
+            const dx = leader.x - target[0];
+            const dy = leader.y - target[1];
+            const dist = Math.sqrt(dx*dx + dy*dy);
+
+            if (dist < 10) {
+                if (Math.random() > 0.95) {
+                    leader.targetIndex = Math.floor(Math.random() * heartPath.length);
+                } else {
+                    if (Math.random() > 0.99) leader.direction *= -1;
+                    leader.targetIndex += leader.direction;
+                    leader.targetIndex = (leader.targetIndex + heartPath.length) % heartPath.length;
+                }
             }
-          }
+
+            // Update physics
+            leader.velX += -dx/dist * leader.speed * config.speed;
+            leader.velY += -dy/dist * leader.speed * config.speed;
+            leader.x += leader.velX;
+            leader.y += leader.velY;
+            leader.velX *= leader.friction;
+            leader.velY *= leader.friction;
+
+            // Render trail
+            renderParticle(leader);
+            for (let k = 1; k < trail.length; k++) {
+                trail[k].x -= (trail[k].x - trail[k-1].x) * 0.7;
+                trail[k].y -= (trail[k].y - trail[k-1].y) * 0.7;
+                renderParticle(trail[k]);
+            }
         });
-      });
-      clearLines();
-      spawnNextPiece();
-      updateBoard();
+    } catch (error) {
+        console.error("Animation error:", error);
     }
-  
-    // Verifica e limpa as linhas completas, atualizando a pontuação e o nível
-    function clearLines() {
-      let linesCleared = 0;
-      for (let y = BOARD_HEIGHT - 1; y >= 0; y--) {
-        if (board[y].every(cell => cell !== 'empty')) {
-          board.splice(y, 1);
-          board.unshift(Array(BOARD_WIDTH).fill('empty'));
-          linesCleared++;
-          y++; // reverificar a mesma linha (pois as linhas caem)
-        }
-      }
-      if (linesCleared > 0) {
-        score += linesCleared * 100;
-        linesClearedTotal += linesCleared;
-        // Aumenta o nível a cada número definido de linhas limpas
-        if (linesClearedTotal >= level * LINES_PER_LEVEL) {
-          level++;
-          gameSpeed = Math.max(100, INITIAL_SPEED - (level - 1) * SPEED_INCREMENT);
-          document.getElementById('level').textContent = level;
-        }
-        document.getElementById('score').textContent = score;
-      }
-    }
-  
-    // Exibe a tela de Game Over
-    function showGameOver() {
-      document.getElementById('gameOver').style.display = 'flex';
-    }
-  
-    // Alterna o estado de pausa
-    function togglePause() {
-      if (gameOver) return;
-      isPaused = !isPaused;
-      const pauseBtn = document.getElementById('pauseBtn');
-      pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
-    }
-  
-    // Reinicia o jogo e todas as variáveis de estado
-    function resetGame() {
-      clearTimeout(gameLoopId);
-      createBoard();
-      score = 0;
-      level = 1;
-      linesClearedTotal = 0;
-      gameSpeed = INITIAL_SPEED;
-      document.getElementById('score').textContent = score;
-      document.getElementById('level').textContent = level;
-      gameOver = false;
-      isPaused = false;
-      document.getElementById('gameOver').style.display = 'none';
-      document.getElementById('pauseBtn').textContent = '⏸️';
-      currentPiece = createPiece();
-      nextPiece = createPiece();
-      updateNextPiece();
-      updateBoard();
-      gameLoop();
-    }
-  
-    // Posiciona a próxima peça como a atual e gera uma nova próxima peça
-    function spawnNextPiece() {
-      currentPiece = nextPiece;
-      currentPiece.x = Math.floor(BOARD_WIDTH / 2) - Math.floor(currentPiece.shape[0].length / 2);
-      currentPiece.y = 0;
-      nextPiece = createPiece();
-      updateNextPiece();
-      // Se a nova peça não couber, encerra o jogo
-      if (!isValidMove(0, 0)) {
-        gameOver = true;
-        showGameOver();
-      }
-    }
-  
-    // Loop do jogo – utiliza setTimeout para permitir o ajuste dinâmico da velocidade
-    function gameLoop() {
-      if (gameOver) return;
-      if (!isPaused) {
-        if (!movePiece(0, 1)) {
-          lockPiece();
-        }
-      }
-      updateBoard();
-      gameLoopId = setTimeout(gameLoop, gameSpeed);
-    }
-  
-    // Configura os eventos de controle (botões e teclado)
-    function setupControls() {
-      document.getElementById('leftBtn').addEventListener('click', () => movePiece(-1, 0));
-      document.getElementById('rightBtn').addEventListener('click', () => movePiece(1, 0));
-      document.getElementById('downBtn').addEventListener('click', () => {
-        if (!movePiece(0, 1)) lockPiece();
-      });
-      document.getElementById('rotateBtn').addEventListener('click', rotatePiece);
-      document.getElementById('pauseBtn').addEventListener('click', togglePause);
-      document.getElementById('resetBtn').addEventListener('click', resetGame);
-      document.getElementById('gameOverReset').addEventListener('click', resetGame);
-      // Eventos de teclado
-      document.addEventListener('keydown', (e) => {
-        if (gameOver) return;
-        switch (e.key) {
-          case 'ArrowLeft':
-            movePiece(-1, 0);
-            break;
-          case 'ArrowRight':
-            movePiece(1, 0);
-            break;
-          case 'ArrowDown':
-            if (!movePiece(0, 1)) lockPiece();
-            break;
-          case 'ArrowUp':
-            rotatePiece();
-            break;
-          case ' ':
-            e.preventDefault();
-            togglePause();
-            break;
-        }
-      });
-    }
-  
-    /********************
-     * INICIALIZAÇÃO DO JOGO
-     ********************/
-    // Aguarda o DOM carregar para configurar os controles e iniciar o jogo
-    document.addEventListener('DOMContentLoaded', () => {
-      setupControls();
-      resetGame();
+
+    requestAnimationFrame(animationLoop);
+}
+
+// Control handlers
+function setupControls() {
+    const controls = document.getElementById('controls');
+    let controlsVisible = true;
+
+    document.getElementById('toggle-controls').addEventListener('click', () => {
+        controlsVisible = !controlsVisible;
+        controls.style.display = controlsVisible ? 'block' : 'none';
     });
-  </script>
-</body>
-</html>
+
+    document.getElementById('toggle-fullscreen').addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    });
+
+    const updateParticles = () => {
+        config.particleCount = Math.min(100, Math.max(10, 
+            parseInt(document.getElementById('particleCount').value)));
+        document.getElementById('particleCountValue').textContent = config.particleCount;
+        initHeartPath();
+        initParticles();
+    };
+
+    document.getElementById('particleCount').addEventListener('input', updateParticles);
+    document.getElementById('speed').addEventListener('input', (e) => {
+        config.speed = parseFloat(e.target.value);
+        document.getElementById('speedValue').textContent = config.speed;
+    });
+    document.getElementById('colorScheme').addEventListener('change', (e) => {
+        config.colorScheme = e.target.value;
+        initParticles();
+    });
+    document.getElementById('mouseInfluence').addEventListener('input', (e) => {
+        config.mouseInfluence = parseInt(e.target.value);
+        document.getElementById('mouseInfluenceValue').textContent = config.mouseInfluence;
+    });
+    document.getElementById('particleSize').addEventListener('input', (e) => {
+        config.particleSize = parseInt(e.target.value);
+        document.getElementById('particleSizeValue').textContent = config.particleSize;
+        initParticles();
+    });
+
+    // Mouse tracking
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        mouseActive = true;
+    });
+    document.addEventListener('mouseleave', () => mouseActive = false);
+
+    // Window resize
+    window.addEventListener('resize', () => {
+        canvasWidth = canvas.width = window.innerWidth;
+        canvasHeight = canvas.height = window.innerHeight;
+        initHeartPath();
+    });
+}
+
+// Initialize everything
+function init() {
+    const controls = document.getElementById('controls');
+    const canvas = document.getElementById('c');
+
+    controls.style.display = 'block';
+    canvas.style.display = 'block';
+    animationRunning = true;
+    setupControls();
+    animationLoop(); // Start the animation loop
+
+    // Initialize everything
+    initHeartPath();
+    initParticles();
+}
+
+// Start the animation
+init();
