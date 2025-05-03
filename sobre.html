@@ -1,411 +1,265 @@
-<div id="controls-container">
-  <button id="toggle-controls">Controls</button>
-  <button id="toggle-fullscreen">Full Screen</button>
-  <div id="controls">
-    <div class="control-group">
-      <label for="colorScheme">Colors:</label>
-      <select id="colorScheme">
-        <option value="rainbow">Rainbow</option>
-        <option value="red">Red</option>
-        <option value="green">Green</option>
-        <option value="blue">Blue</option>
-        <option value="monochrome">Monochrome</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <label for="particleSize">Size:</label>
-      <input type="range" id="particleSize" min="1" max="20" value="10">
-      <span id="particleSizeValue">10</span>
-    </div>
-    <div class="control-group">
-      <label for="particleCount">Particles:</label>
-      <input type="range" id="particleCount" min="10" max="100" value="32">
-      <span id="particleCountValue">32</span>
-    </div>
-    <div class="control-group">
-      <label for="speed">Speed:</label>
-      <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1">
-      <span id="speedValue">1</span>
-    </div>
-    <div class="control-group">
-      <label for="mouseInfluence">Mouse Follow:</label>
-      <input type="range" id="mouseInfluence" min="0" max="100" value="50">
-      <span id="mouseInfluenceValue">50</span>
-    </div>
-  </div>
+<div id="clock">
+  <div id="digital"></div>
 </div>
-
-<canvas id="c"></canvas>
+<div id="parameters">
+  <fieldset id="currentTime">
+    <label>currentTime</label>
+    <input class="value" type="text" />
+    <input class="range" type="range" min="0" max="86400000" step="1" />
+  </fieldset>
+  <fieldset id="speed">
+    <label>speed</label>
+    <input class="value" type="text" value="1" />
+    <input class="range" type="range" min=".01" max="2" step=".01" value="1" />
+  </fieldset>
+</div>
+<div id="controls">
+  <button id="play">PLAY</button>
+  <button id="pause">PAUSE</button>
+  <button id="reverse">REVERSE</button>
+  <button id="alternate">ALTERNATE</button>
+  <button id="slowmo">SLOW MO</button>
+  <button id="speedup">SPEED UP</button>
+  <button id="normalspeed">NORMAL SPEED</button>
+  <button id="reset">RESET</button>
+  <button id="resume">RESUME</button>
+  <button id="seek">SEEK</button>
+  <button id="complete">COMPLETE</button>
+  <button id="restart">RESTART</button>
+</div>
 body {
-  margin: 0;
-  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
   overflow: hidden;
-  background-color: #000;
-  font-family: "Archivo Black", sans-serif;
-  color: white;
-}
-
-#c {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  background: #1a1a1a;
+  font-family: monospace;
 }
-
-#controls-container {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
-}
-
-#toggle-controls {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 5px;
-  backdrop-filter: blur(5px);
-}
-
-#controls {
-  background: rgba(100, 100, 100, 0.2);
-  padding: 15px;
-  border-radius: 10px;
-  max-width: 300px;
-  backdrop-filter: blur(5px);
-  display: block;
-}
-
-.control-group {
-  margin: 10px 0;
+#clock {
+  font-size: 32px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 40ch;
+  height: 20ch;
+  padding: 4ch;
+  border-radius: 4ch;
+/*      background: #202020;*/
 }
-
-.control-group label {
-  width: 100px;
-  font-size: 14px;
-  margin-right: 10px;
+#digital {
+  perspective: 1000px;
+  display: flex;
+  gap: 1ch;
+  height: 4ch;
+  margin-top: 4ch;
+  margin-bottom: 4ch;
 }
-
-.control-group input[type="range"] {
-  flex-grow: 1;
-  margin-right: 10px;
+#digital::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -150%;
+  left: -50%;
+  width: 200%;
+  height: 400%;
+  background-image: linear-gradient(180deg, #1a1a1a 10%, #1a1a1a66 30%, #1a1a1a00 40%, #1a1a1a00 60%,#1a1a1a66 70%, #1a1a1a 90%);
 }
-
-.control-group span {
-  width: 30px;
+.slot {
+  position: relative;
+  width: 1ch;
+  height: 2ch;
+  color: #fff;
+  display: flex;
+  transform-style: preserve-3d;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 2em;
+}
+.colon {
+  transform: translateZ(3ch);
+}
+.numbers > div {
+  position: absolute;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  transform-origin: center center 0px;
+}
+#parameters {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  padding: 3ch;
+}
+fieldset {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5ch;
+  margin-bottom: 1ch;
+}
+fieldset > input {
+  min-width: 0;
+  border-radius: .1ch;
+  accent-color: white;
+  color: white;
   text-align: right;
-  font-size: 14px;
+  background: transparent;
 }
-
-.control-group select {
+fieldset > label {
+  flex-shrink: 0;
+  width: 10ch;
+}
+fieldset > .value {
+  width: 16ch;
+}
+fieldset > .range {
+  width: 100%;
+}
+#controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 3ch;
+}
+#controls button {
+  width: 20%;
   flex-grow: 1;
-  padding: 5px;
-  border-radius: 4px;
-  background: #333;
-  color: white;
-  border: none;
+  flex-shrink: 0;
+  height: 4ch;
+  min-width: 0;
+  border-radius: 1ch;
+  margin: .5ch;
+  background-color: #2A2A2A;
+  color: #FFF;
+}
+#controls button:hover {
+  background-color: #3A3A3A;
+}
+#controls button:focus {
+  background-color: #FFF;
+  color: #2A2A2A;
 }
 
-.heart-outline {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 360px;
-  height: 320px;
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.3);
-  stroke-width: 2;
-  pointer-events: none;
-  z-index: 10;
-}
+import { animate, createTimeline, utils } from 'https://assets.codepen.io/1137/anime.esm.min.js';
 
-#intro-controls {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
-}
+const [ $digitalClock ] = utils.$('#digital');
 
-#intro-controls h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
+const s = 1000;
+const m = 60*s;
+const h = 60*m;
+const oneday = h * 24;
 
-#intro-controls ul {
-  list-style-type: none;
-  padding: 0;
-}
+const masterTL = createTimeline({ defaults: { ease: 'linear' }, autoplay: false });
 
-#intro-controls li {
-  margin-bottom: 5px;
-  font-size: 1em;
-}
-
-#toggle-fullscreen {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 100;
-  backdrop-filter: blur(5px);
-}
-
-@media (max-width: 600px) {
-  #controls-container {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    max-width: none;
+[h * 10, h, 0, m * 10, m, 0, s * 10, s, 0, 100, 10].forEach(d => {
+  const $el = document.createElement('div');
+  $digitalClock.appendChild($el);
+  $el.classList.add('slot');
+  if (!d) {
+    $el.classList.add('colon');
+    $el.textContent = ':';
+  } else {
+    $el.classList.add('numbers');
+    for (let i = 0; i < 10; i++) {
+      const $num = document.createElement('div');
+      $num.textContent = `${i}`;
+      utils.set($num, { rotateX: (i * 36), z: '3ch' });
+      $el.appendChild($num);
+    }
+    const canStop = d > 100;
+    const ease = canStop ? 'cubicBezier(1,0,.6,1.2)' : 'linear';
+    const duration = canStop ? 650 : d;
+    const position = `+=${canStop ? d - 650 : 0}`;
+    const numTL = createTimeline({ defaults: { ease }, loop: true });
+    const t = d === h*10 ? 4 : d === h ? 25 : d === m*10 || d === s*10 ? 7 : 11;
+    for (let i = 1; i < t; i++) {
+      const rotateX = -((i * 36) + (i === t - 1 ? (360 - i * 36) : 0));
+      numTL.add($el, { rotateX, duration }, d === h*10 && i === t - 1 ? '+=' + ((h * 4) - 650) : position);
+    }
+    masterTL.sync(numTL, 0);
   }
+});
 
-  .control-group label {
-    width: 80px;
-    font-size: 12px;
+masterTL.duration = oneday;
+masterTL.iterationDuration = oneday;
+
+const getNow = () => new Date().getTime() % oneday;
+
+const [ $currentTimeRange ] = /** @type {Array<HTMLInputElement>} */(utils.$('#currentTime .range'));
+const [ $currentTimeValue ] = /** @type {Array<HTMLInputElement>} */(utils.$('#currentTime .value'));
+
+const [ $speedRange ] = /** @type {Array<HTMLInputElement>} */(utils.$('#speed .range'));
+const [ $speedValue ] = /** @type {Array<HTMLInputElement>} */(utils.$('#speed .value'));
+
+masterTL.currentTime = getNow();
+// masterTL.currentTime = oneday - 3000;
+
+masterTL.onUpdate = ({currentTime, speed}) => {
+  $currentTimeRange.value = `${currentTime}`;
+  $currentTimeValue.value = `${currentTime}`;
+  $speedRange.value = `${speed}`;
+  $speedValue.value = `${utils.round(speed, 0)}`;
+}
+
+utils.$('#controls button').forEach($button => {
+  const id = $button.id;
+  $button.onclick = () => {
+    if (id === 'seek') {
+      animate(masterTL, {
+        currentTime: getNow(),
+        ease: 'inOut(3)',
+        duration: 1500
+      })
+    } else if (id === 'slowmo') {
+      animate(masterTL, {
+        speed: .1,
+        ease: 'out(3)',
+        duration: 1500
+      })
+    } else if (id === 'speedup') {
+      animate(masterTL, {
+        speed: 5,
+        ease: 'out(3)',
+        duration: 1500
+      })
+    } else if (id === 'normalspeed') {
+      animate(masterTL, {
+        speed: 1,
+        ease: 'out(3)',
+        duration: 1500
+      })
+    } else {
+      masterTL[id]();
+    }
   }
-}
-// Configuration
-const config = {
-    particleCount: 32,
-    speed: 1,
-    colorScheme: 'rainbow',
-    mouseInfluence: 50,
-    showHeartOutline: true,
-    particleSize: 10
-};
+});
 
-// Canvas setup
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-let canvasWidth = canvas.width = window.innerWidth;
-let canvasHeight = canvas.height = window.innerHeight;
-
-// Animation state
-let trails = [];
-let heartPath = [];
-let mouseX = canvasWidth / 2;
-let mouseY = canvasHeight / 2;
-let mouseActive = false;
-let animationRunning = false;
-
-// Initialize heart path points (fixed formula)
-function initHeartPath() {
-    heartPath = [];
-    const PI2 = 6.28318; // 2*PI approximation
-    const steps = Math.max(32, config.particleCount);
-    
-    for (let i = 0; i < steps; i++) {
-        const t = (i / steps) * PI2;
-        heartPath.push([
-            canvasWidth/2 + 180 * Math.pow(Math.sin(t), 3),
-            canvasHeight/2 + 10 * (-(15 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)))
-        ]);
-    }
-}
-
-// Initialize particles with proper bounds checking
-function initParticles() {
-    trails = [];
-    if (heartPath.length === 0) initHeartPath();
-
-    for (let i = 0; i < config.particleCount; i++) {
-        const particles = [];
-        const x = Math.random() * canvasWidth;
-        const y = Math.random() * canvasHeight;
-
-        for (let k = 0; k < config.particleCount; k++) {
-            // Color generation
-            let hue, saturation = Math.random() * 40 + 60;
-            let brightness = Math.random() * 60 + 20;
-            
-            switch(config.colorScheme) {
-                case 'red': hue = Math.random() * 20 + 350; break;
-                case 'blue': hue = Math.random() * 20 + 200; break;
-                case 'green': hue = Math.random() * 20 + 100; break;
-                case 'monochrome': hue = 0; saturation = 0; break;
-                default: hue = i/config.particleCount * 360; // rainbow
-            }
-
-            particles.push({
-                x, y,
-                velX: 0, velY: 0,
-                radius: ((1 - k/config.particleCount) + 1) * config.particleSize/2,
-                speed: Math.random() + 1,
-                targetIndex: Math.floor(Math.random() * heartPath.length),
-                direction: i % 2 * 2 - 1,
-                friction: Math.random() * 0.2 + 0.7,
-                color: `hsla(${hue},${saturation}%,${brightness}%,0.1)`
-            });
-        }
-        trails.push(particles);
-    }
-}
-
-// Render a single particle
-function renderParticle(particle) {
-    ctx.fillStyle = particle.color;
-    ctx.beginPath();
-    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-    ctx.fill();
-}
-
-// Main animation loop with robust error handling
-function animationLoop() {
-    if (!animationRunning) return; // Stop the animation if not running
-
-    try {
-        // Clear with trail effect
-        ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-        trails.forEach(trail => {
-            if (!trail || !trail.length) return;
-            
-            const leader = trail[0];
-            const target = heartPath[leader.targetIndex % heartPath.length];
-            if (!target) return;
-
-            // Mouse influence
-            if (mouseActive && config.mouseInfluence > 0) {
-                const dx = mouseX - leader.x;
-                const dy = mouseY - leader.y;
-                const dist = Math.sqrt(dx*dx + dy*dy);
-                
-                if (dist < 300) {
-                    const force = (1 - dist/300) * (config.mouseInfluence/20);
-                    leader.velX += dx/dist * force;
-                    leader.velY += dy/dist * force;
-                }
-            }
-
-            // Move toward target
-            const dx = leader.x - target[0];
-            const dy = leader.y - target[1];
-            const dist = Math.sqrt(dx*dx + dy*dy);
-
-            if (dist < 10) {
-                if (Math.random() > 0.95) {
-                    leader.targetIndex = Math.floor(Math.random() * heartPath.length);
-                } else {
-                    if (Math.random() > 0.99) leader.direction *= -1;
-                    leader.targetIndex += leader.direction;
-                    leader.targetIndex = (leader.targetIndex + heartPath.length) % heartPath.length;
-                }
-            }
-
-            // Update physics
-            leader.velX += -dx/dist * leader.speed * config.speed;
-            leader.velY += -dy/dist * leader.speed * config.speed;
-            leader.x += leader.velX;
-            leader.y += leader.velY;
-            leader.velX *= leader.friction;
-            leader.velY *= leader.friction;
-
-            // Render trail
-            renderParticle(leader);
-            for (let k = 1; k < trail.length; k++) {
-                trail[k].x -= (trail[k].x - trail[k-1].x) * 0.7;
-                trail[k].y -= (trail[k].y - trail[k-1].y) * 0.7;
-                renderParticle(trail[k]);
-            }
-        });
-    } catch (error) {
-        console.error("Animation error:", error);
-    }
-
-    requestAnimationFrame(animationLoop);
-}
-
-// Control handlers
-function setupControls() {
-    const controls = document.getElementById('controls');
-    let controlsVisible = true;
-
-    document.getElementById('toggle-controls').addEventListener('click', () => {
-        controlsVisible = !controlsVisible;
-        controls.style.display = controlsVisible ? 'block' : 'none';
-    });
-
-    document.getElementById('toggle-fullscreen').addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
-        }
-    });
-
-    const updateParticles = () => {
-        config.particleCount = Math.min(100, Math.max(10, 
-            parseInt(document.getElementById('particleCount').value)));
-        document.getElementById('particleCountValue').textContent = config.particleCount;
-        initHeartPath();
-        initParticles();
-    };
-
-    document.getElementById('particleCount').addEventListener('input', updateParticles);
-    document.getElementById('speed').addEventListener('input', (e) => {
-        config.speed = parseFloat(e.target.value);
-        document.getElementById('speedValue').textContent = config.speed;
-    });
-    document.getElementById('colorScheme').addEventListener('change', (e) => {
-        config.colorScheme = e.target.value;
-        initParticles();
-    });
-    document.getElementById('mouseInfluence').addEventListener('input', (e) => {
-        config.mouseInfluence = parseInt(e.target.value);
-        document.getElementById('mouseInfluenceValue').textContent = config.mouseInfluence;
-    });
-    document.getElementById('particleSize').addEventListener('input', (e) => {
-        config.particleSize = parseInt(e.target.value);
-        document.getElementById('particleSizeValue').textContent = config.particleSize;
-        initParticles();
-    });
-
-    // Mouse tracking
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        mouseActive = true;
-    });
-    document.addEventListener('mouseleave', () => mouseActive = false);
-
-    // Window resize
-    window.addEventListener('resize', () => {
-        canvasWidth = canvas.width = window.innerWidth;
-        canvasHeight = canvas.height = window.innerHeight;
-        initHeartPath();
-    });
-}
-
-// Initialize everything
-function init() {
-    const controls = document.getElementById('controls');
-    const canvas = document.getElementById('c');
-
-    controls.style.display = 'block';
-    canvas.style.display = 'block';
-    animationRunning = true;
-    setupControls();
-    animationLoop(); // Start the animation loop
-
-    // Initialize everything
-    initHeartPath();
-    initParticles();
-}
-
-// Start the animation
-init();
+utils.$('fieldset').forEach($el => {
+  const $range = /** @type {HTMLInputElement} */($el.querySelector('.range'));
+  const $value = /** @type {HTMLInputElement} */($el.querySelector('.value'));
+  const prop = $el.id;
+  const value = masterTL[prop];
+  $range.value = value;
+  $value.value = masterTL[prop];
+  $range.oninput = () => {
+    const newValue = prop === 'currentTime' ? +$range.value % oneday : +$range.value;
+    utils.sync(() => masterTL[prop] = newValue);
+    $value.value = `${utils.round(newValue, 0)}`;
+  };
+});
