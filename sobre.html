@@ -1,180 +1,77 @@
-<!-- 
-  Inspired by @konstantindenerz
-  https://codepen.io/konstantindenerz/pen/bNGQpqJ
- -->
-
-<div class="container">
-  <div class="koi">
-    <div class="koi-links">
-      <div class="koi-link" style="--i: 1"></div>
-      <div class="koi-link" style="--i: 2"></div>
-      <div class="koi-link" style="--i: 3"></div>
-      <div class="koi-link" style="--i: 4"></div>
-      <div class="koi-link" style="--i: 5"></div>
-      <div class="koi-link" style="--i: 6"></div>
-      <div class="koi-link" style="--i: 7"></div>
-      <div class="koi-link" style="--i: 8"></div>
-      <div class="koi-link" style="--i: 9"></div>
-      <div class="koi-link" style="--i: 10"></div>
-      <div class="koi-link" style="--i: 11"></div>
-      <div class="koi-link" style="--i: 12"></div>
-    </div>
-    <div class="koi-fins">
-      <div class="koi-fin"></div>
-      <div class="koi-fin"></div>
-    </div>
-    <div class="koi-tails">
-      <div class="koi-tail"></div>
-      <div class="koi-tail"></div>
-    </div>
-  </div>
-
-  <div class="koi">
-    <div class="koi-links">
-      <div class="koi-link" style="--i: 1"></div>
-      <div class="koi-link" style="--i: 2"></div>
-      <div class="koi-link" style="--i: 3"></div>
-      <div class="koi-link" style="--i: 4"></div>
-      <div class="koi-link" style="--i: 5"></div>
-      <div class="koi-link" style="--i: 6"></div>
-      <div class="koi-link" style="--i: 7"></div>
-      <div class="koi-link" style="--i: 8"></div>
-      <div class="koi-link" style="--i: 9"></div>
-      <div class="koi-link" style="--i: 10"></div>
-      <div class="koi-link" style="--i: 11"></div>
-      <div class="koi-link" style="--i: 12"></div>
-    </div>
-    <div class="koi-fins">
-      <div class="koi-fin"></div>
-      <div class="koi-fin"></div>
-    </div>
-    <div class="koi-tails">
-      <div class="koi-tail"></div>
-      <div class="koi-tail"></div>
-    </div>
-  </div>
-</div>
-*, *::before, *::after {
-    padding: 0;
-    margin: 0 auto;
-    box-sizing: border-box;
+<div><input type="range" step=".01"></div>
+<div><input type="range" step=".01" style="--c: #F27435;"></div>
+<div><input type="range" step=".01" style="--c: #7AB317"></div>
+<div><input type="range" step=".01" style="--c: #0D6759"></div>
+@property --v {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0; 
+}
+input {
+  --c: #F04155; /* active color */
+  --g: 8px; /* the gap */
+  --l: 5px; /* line thickness*/
+  --s: 30px; /* thumb size*/
+  
+  --_c: color-mix(in srgb, var(--c), #000 var(--p,0%));
+  width: 10000vw;
+  appearance :none;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+  translate: calc((50 - var(--v))*100vw) 0;
+  transition: translate 1s .2s var(--spring-easing);
+  @starting-style {
+    translate: 0%;
+  }
+}
+/* chromium */
+input[type="range"]::-webkit-slider-thumb{
+  height: var(--s);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 0 0 0 var(--_b,var(--l)) inset var(--_c);
+  border-image: linear-gradient(90deg,var(--_c) 50%,#ababab 0) 0 1/calc(50% - var(--l)/2) 100vw/0 calc(100vw + var(--g));
+  appearance: none;
+  transition: .3s;
+  view-timeline: --v inline;
+}
+input:focus-visible,
+input:hover{
+  --p: 25%;
 }
 
-html {
-  /* make the whole thing responsive */
-  font-size: min(16px, 3vmin);
+div {
+  timeline-scope: --v;
+  animation: --v linear both;
+  animation-timeline: --v;
+  animation-range: entry 100% exit 0%;
+  overflow: hidden;
+  width: min(500px,70vw);
+  display: grid;
+  place-content: center;
+}
+@keyframes --v {
+  0% {--v: 100}
+  to {--v: 0  }
 }
 
 body {
-  background-color: #aaa;
+  margin: 0;
   min-height: 100vh;
   display: grid;
-  place-items: center;
-  background-image: radial-gradient(circle, #e93e1e 5em, transparent 0);
-  overflow: hidden;
+  gap: 20px;
+  place-content: center;
+  background: repeating-linear-gradient(135deg,#fff 0 20px, #ffefd5 0 40px);
+}
+:root {
+  --spring-easing: linear(0, 0.024, 0.068 1%, 0.22 2.2%, 0.968 6.1%, 1.221 7.7%, 1.314, 1.383, 1.426 10%, 1.438, 1.445, 1.447, 1.445 11.4%, 1.432, 1.405, 1.365 13.4%, 1.272 14.6%, 1.004 17.7%, 0.892 19.3%, 0.855, 0.828, 0.811, 0.802, 0.802, 0.808, 0.819, 0.837 24.8%, 0.879 26.1%, 0.998 29.1%, 1.048 30.8%, 1.076 32.2%, 1.084, 1.088 33.6%, 1.086, 1.077, 1.059 37.2%, 1.006 40.3%, 0.984 41.7%, 0.968 43.4%, 0.963, 0.961 45%, 0.962, 0.966 47.3%, 1.007 53.2%, 1.014, 1.017 56.4%, 1.015 58.8%, 0.997 64.6%, 0.992 67.8%, 0.993 70.2%, 1.001 75.9%, 1.003 78.9%, 0.999 90.2%, 1);
 }
 
-.container {
-  position: relative;
-}
-
-.koi {
-  position: absolute;
-  inset: -25em;
-  filter: blur(0.5em) contrast(15);
-  animation: koiRotate 24s var(--rotateDelay, 0s) infinite linear;
-  
-  &:nth-child(1) {
-    --linkColor: white;
-    --duration: 3s;
-    background-color: black;
-    mix-blend-mode: lighten;
-  }
-
-  &:nth-child(2) {
-    --linkColor: black;
-    --duration: 3.5s;
-    --rotateDelay: -12s;
-    background-color: white;
-    mix-blend-mode: darken;
+@supports (-moz-appearance: none) {
+  body * {display:none}
+  body:before {
+    content: "Nothing for you Firefox users. Use Chrome!";
+    font: bold 30px system-ui,sans-serif;
   }
 }
-
-@keyframes koiRotate {
-  to { rotate: 1turn; }
-}
-
-.koi-links {
-  position: absolute;
-  left: 50%; top: 50%;
-}
-
-.koi-link {
-  --w: calc(pow(var(--i) / 12, 2) * -2em - 0.25em);
-  --delay: calc(var(--i) * var(--duration) * -0.15 - 20s);
-  
-  position: absolute;
-  inset: var(--w) -3em;
-  background-color: var(--linkColor);
-  border-radius: 50%;
-  animation: link var(--duration) var(--delay) infinite ease-in-out alternate;
-}
-
-@keyframes link {
-  from { transform: rotate(calc(var(--i) * 10deg)) translateY(-8.5em); }
-  to { transform: rotate(calc(var(--i) * 10deg)) translateY(-11.5em); }
-}
-
-.koi-fins {
-  --i: 10;
-  --delay: calc(var(--i) * var(--duration) * -0.15 - 20s);
-  
-  position: absolute;
-  left: 50%; top: 50%;
-  animation: link var(--duration) var(--delay) infinite ease-in-out alternate;
-}
-
-.koi-fin {
-  position: absolute;
-  inset: -3em -1.5em;
-  background-color: var(--linkColor);
-  border-radius: 50%;
-  transform-origin: bottom;
-  animation: fin var(--duration) infinite ease-in-out;
-
-  &:nth-child(2) {
-    --rz: 180deg;
-  }
-}
-
-@keyframes fin {
-  0%, 100% { transform: translateY(-3em) rotateX(var(--rz, 0deg)) rotate(10deg); }
-  40% { transform: translateY(-3em) rotateX(var(--rz, 0deg)) rotate(-30deg); }
-}
-
-.koi-tails {
-  --i: 1;
-  --delay: calc(var(--i) * var(--duration) * -0.15 - 20s);
-  
-  position: absolute;
-  left: 50%; top: 50%;
-  animation: link var(--duration) var(--delay) infinite ease-in-out alternate;
-}
-
-.koi-tail {
-  position: absolute;
-  inset: -2em -1em;
-  background-color: var(--linkColor);
-  border-radius: 50%;
-  transform-origin: bottom;
-  animation: tail var(--duration) infinite ease-in-out;
-
-  &:nth-child(2) {
-    --rz: 180deg;
-  }
-}
-
-@keyframes tail {
-  0%, 100% { transform: translateY(-2em) rotateX(var(--rz, 0deg)) rotate(-60deg); }
-  50% { transform: translateY(-2em) rotateX(var(--rz, 0deg)) rotate(-40deg); }
-body }
