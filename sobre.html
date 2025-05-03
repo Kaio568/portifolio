@@ -1,265 +1,180 @@
-<div id="clock">
-  <div id="digital"></div>
+<!-- 
+  Inspired by @konstantindenerz
+  https://codepen.io/konstantindenerz/pen/bNGQpqJ
+ -->
+
+<div class="container">
+  <div class="koi">
+    <div class="koi-links">
+      <div class="koi-link" style="--i: 1"></div>
+      <div class="koi-link" style="--i: 2"></div>
+      <div class="koi-link" style="--i: 3"></div>
+      <div class="koi-link" style="--i: 4"></div>
+      <div class="koi-link" style="--i: 5"></div>
+      <div class="koi-link" style="--i: 6"></div>
+      <div class="koi-link" style="--i: 7"></div>
+      <div class="koi-link" style="--i: 8"></div>
+      <div class="koi-link" style="--i: 9"></div>
+      <div class="koi-link" style="--i: 10"></div>
+      <div class="koi-link" style="--i: 11"></div>
+      <div class="koi-link" style="--i: 12"></div>
+    </div>
+    <div class="koi-fins">
+      <div class="koi-fin"></div>
+      <div class="koi-fin"></div>
+    </div>
+    <div class="koi-tails">
+      <div class="koi-tail"></div>
+      <div class="koi-tail"></div>
+    </div>
+  </div>
+
+  <div class="koi">
+    <div class="koi-links">
+      <div class="koi-link" style="--i: 1"></div>
+      <div class="koi-link" style="--i: 2"></div>
+      <div class="koi-link" style="--i: 3"></div>
+      <div class="koi-link" style="--i: 4"></div>
+      <div class="koi-link" style="--i: 5"></div>
+      <div class="koi-link" style="--i: 6"></div>
+      <div class="koi-link" style="--i: 7"></div>
+      <div class="koi-link" style="--i: 8"></div>
+      <div class="koi-link" style="--i: 9"></div>
+      <div class="koi-link" style="--i: 10"></div>
+      <div class="koi-link" style="--i: 11"></div>
+      <div class="koi-link" style="--i: 12"></div>
+    </div>
+    <div class="koi-fins">
+      <div class="koi-fin"></div>
+      <div class="koi-fin"></div>
+    </div>
+    <div class="koi-tails">
+      <div class="koi-tail"></div>
+      <div class="koi-tail"></div>
+    </div>
+  </div>
 </div>
-<div id="parameters">
-  <fieldset id="currentTime">
-    <label>currentTime</label>
-    <input class="value" type="text" />
-    <input class="range" type="range" min="0" max="86400000" step="1" />
-  </fieldset>
-  <fieldset id="speed">
-    <label>speed</label>
-    <input class="value" type="text" value="1" />
-    <input class="range" type="range" min=".01" max="2" step=".01" value="1" />
-  </fieldset>
-</div>
-<div id="controls">
-  <button id="play">PLAY</button>
-  <button id="pause">PAUSE</button>
-  <button id="reverse">REVERSE</button>
-  <button id="alternate">ALTERNATE</button>
-  <button id="slowmo">SLOW MO</button>
-  <button id="speedup">SPEED UP</button>
-  <button id="normalspeed">NORMAL SPEED</button>
-  <button id="reset">RESET</button>
-  <button id="resume">RESUME</button>
-  <button id="seek">SEEK</button>
-  <button id="complete">COMPLETE</button>
-  <button id="restart">RESTART</button>
-</div>
+*, *::before, *::after {
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+html {
+  /* make the whole thing responsive */
+  font-size: min(16px, 3vmin);
+}
+
 body {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
+  background-color: #aaa;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background-image: radial-gradient(circle, #e93e1e 5em, transparent 0);
   overflow: hidden;
-  width: 100%;
-  height: 100%;
-  background: #1a1a1a;
-  font-family: monospace;
 }
-#clock {
-  font-size: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 40ch;
-  height: 20ch;
-  padding: 4ch;
-  border-radius: 4ch;
-/*      background: #202020;*/
-}
-#digital {
-  perspective: 1000px;
-  display: flex;
-  gap: 1ch;
-  height: 4ch;
-  margin-top: 4ch;
-  margin-bottom: 4ch;
-}
-#digital::after {
-  content: "";
-  display: block;
-  position: absolute;
-  top: -150%;
-  left: -50%;
-  width: 200%;
-  height: 400%;
-  background-image: linear-gradient(180deg, #1a1a1a 10%, #1a1a1a66 30%, #1a1a1a00 40%, #1a1a1a00 60%,#1a1a1a66 70%, #1a1a1a 90%);
-}
-.slot {
+
+.container {
   position: relative;
-  width: 1ch;
-  height: 2ch;
-  color: #fff;
-  display: flex;
-  transform-style: preserve-3d;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 2em;
 }
-.colon {
-  transform: translateZ(3ch);
-}
-.numbers > div {
+
+.koi {
   position: absolute;
-  transform-style: preserve-3d;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backface-visibility: hidden;
-  transform-origin: center center 0px;
-}
-#parameters {
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 100%;
-  padding: 3ch;
-}
-fieldset {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: .5ch;
-  margin-bottom: 1ch;
-}
-fieldset > input {
-  min-width: 0;
-  border-radius: .1ch;
-  accent-color: white;
-  color: white;
-  text-align: right;
-  background: transparent;
-}
-fieldset > label {
-  flex-shrink: 0;
-  width: 10ch;
-}
-fieldset > .value {
-  width: 16ch;
-}
-fieldset > .range {
-  width: 100%;
-}
-#controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  padding: 3ch;
-}
-#controls button {
-  width: 20%;
-  flex-grow: 1;
-  flex-shrink: 0;
-  height: 4ch;
-  min-width: 0;
-  border-radius: 1ch;
-  margin: .5ch;
-  background-color: #2A2A2A;
-  color: #FFF;
-}
-#controls button:hover {
-  background-color: #3A3A3A;
-}
-#controls button:focus {
-  background-color: #FFF;
-  color: #2A2A2A;
-}
-
-import { animate, createTimeline, utils } from 'https://assets.codepen.io/1137/anime.esm.min.js';
-
-const [ $digitalClock ] = utils.$('#digital');
-
-const s = 1000;
-const m = 60*s;
-const h = 60*m;
-const oneday = h * 24;
-
-const masterTL = createTimeline({ defaults: { ease: 'linear' }, autoplay: false });
-
-[h * 10, h, 0, m * 10, m, 0, s * 10, s, 0, 100, 10].forEach(d => {
-  const $el = document.createElement('div');
-  $digitalClock.appendChild($el);
-  $el.classList.add('slot');
-  if (!d) {
-    $el.classList.add('colon');
-    $el.textContent = ':';
-  } else {
-    $el.classList.add('numbers');
-    for (let i = 0; i < 10; i++) {
-      const $num = document.createElement('div');
-      $num.textContent = `${i}`;
-      utils.set($num, { rotateX: (i * 36), z: '3ch' });
-      $el.appendChild($num);
-    }
-    const canStop = d > 100;
-    const ease = canStop ? 'cubicBezier(1,0,.6,1.2)' : 'linear';
-    const duration = canStop ? 650 : d;
-    const position = `+=${canStop ? d - 650 : 0}`;
-    const numTL = createTimeline({ defaults: { ease }, loop: true });
-    const t = d === h*10 ? 4 : d === h ? 25 : d === m*10 || d === s*10 ? 7 : 11;
-    for (let i = 1; i < t; i++) {
-      const rotateX = -((i * 36) + (i === t - 1 ? (360 - i * 36) : 0));
-      numTL.add($el, { rotateX, duration }, d === h*10 && i === t - 1 ? '+=' + ((h * 4) - 650) : position);
-    }
-    masterTL.sync(numTL, 0);
+  inset: -25em;
+  filter: blur(0.5em) contrast(15);
+  animation: koiRotate 24s var(--rotateDelay, 0s) infinite linear;
+  
+  &:nth-child(1) {
+    --linkColor: white;
+    --duration: 3s;
+    background-color: black;
+    mix-blend-mode: lighten;
   }
-});
 
-masterTL.duration = oneday;
-masterTL.iterationDuration = oneday;
-
-const getNow = () => new Date().getTime() % oneday;
-
-const [ $currentTimeRange ] = /** @type {Array<HTMLInputElement>} */(utils.$('#currentTime .range'));
-const [ $currentTimeValue ] = /** @type {Array<HTMLInputElement>} */(utils.$('#currentTime .value'));
-
-const [ $speedRange ] = /** @type {Array<HTMLInputElement>} */(utils.$('#speed .range'));
-const [ $speedValue ] = /** @type {Array<HTMLInputElement>} */(utils.$('#speed .value'));
-
-masterTL.currentTime = getNow();
-// masterTL.currentTime = oneday - 3000;
-
-masterTL.onUpdate = ({currentTime, speed}) => {
-  $currentTimeRange.value = `${currentTime}`;
-  $currentTimeValue.value = `${currentTime}`;
-  $speedRange.value = `${speed}`;
-  $speedValue.value = `${utils.round(speed, 0)}`;
+  &:nth-child(2) {
+    --linkColor: black;
+    --duration: 3.5s;
+    --rotateDelay: -12s;
+    background-color: white;
+    mix-blend-mode: darken;
+  }
 }
 
-utils.$('#controls button').forEach($button => {
-  const id = $button.id;
-  $button.onclick = () => {
-    if (id === 'seek') {
-      animate(masterTL, {
-        currentTime: getNow(),
-        ease: 'inOut(3)',
-        duration: 1500
-      })
-    } else if (id === 'slowmo') {
-      animate(masterTL, {
-        speed: .1,
-        ease: 'out(3)',
-        duration: 1500
-      })
-    } else if (id === 'speedup') {
-      animate(masterTL, {
-        speed: 5,
-        ease: 'out(3)',
-        duration: 1500
-      })
-    } else if (id === 'normalspeed') {
-      animate(masterTL, {
-        speed: 1,
-        ease: 'out(3)',
-        duration: 1500
-      })
-    } else {
-      masterTL[id]();
-    }
-  }
-});
+@keyframes koiRotate {
+  to { rotate: 1turn; }
+}
 
-utils.$('fieldset').forEach($el => {
-  const $range = /** @type {HTMLInputElement} */($el.querySelector('.range'));
-  const $value = /** @type {HTMLInputElement} */($el.querySelector('.value'));
-  const prop = $el.id;
-  const value = masterTL[prop];
-  $range.value = value;
-  $value.value = masterTL[prop];
-  $range.oninput = () => {
-    const newValue = prop === 'currentTime' ? +$range.value % oneday : +$range.value;
-    utils.sync(() => masterTL[prop] = newValue);
-    $value.value = `${utils.round(newValue, 0)}`;
-  };
-});
+.koi-links {
+  position: absolute;
+  left: 50%; top: 50%;
+}
+
+.koi-link {
+  --w: calc(pow(var(--i) / 12, 2) * -2em - 0.25em);
+  --delay: calc(var(--i) * var(--duration) * -0.15 - 20s);
+  
+  position: absolute;
+  inset: var(--w) -3em;
+  background-color: var(--linkColor);
+  border-radius: 50%;
+  animation: link var(--duration) var(--delay) infinite ease-in-out alternate;
+}
+
+@keyframes link {
+  from { transform: rotate(calc(var(--i) * 10deg)) translateY(-8.5em); }
+  to { transform: rotate(calc(var(--i) * 10deg)) translateY(-11.5em); }
+}
+
+.koi-fins {
+  --i: 10;
+  --delay: calc(var(--i) * var(--duration) * -0.15 - 20s);
+  
+  position: absolute;
+  left: 50%; top: 50%;
+  animation: link var(--duration) var(--delay) infinite ease-in-out alternate;
+}
+
+.koi-fin {
+  position: absolute;
+  inset: -3em -1.5em;
+  background-color: var(--linkColor);
+  border-radius: 50%;
+  transform-origin: bottom;
+  animation: fin var(--duration) infinite ease-in-out;
+
+  &:nth-child(2) {
+    --rz: 180deg;
+  }
+}
+
+@keyframes fin {
+  0%, 100% { transform: translateY(-3em) rotateX(var(--rz, 0deg)) rotate(10deg); }
+  40% { transform: translateY(-3em) rotateX(var(--rz, 0deg)) rotate(-30deg); }
+}
+
+.koi-tails {
+  --i: 1;
+  --delay: calc(var(--i) * var(--duration) * -0.15 - 20s);
+  
+  position: absolute;
+  left: 50%; top: 50%;
+  animation: link var(--duration) var(--delay) infinite ease-in-out alternate;
+}
+
+.koi-tail {
+  position: absolute;
+  inset: -2em -1em;
+  background-color: var(--linkColor);
+  border-radius: 50%;
+  transform-origin: bottom;
+  animation: tail var(--duration) infinite ease-in-out;
+
+  &:nth-child(2) {
+    --rz: 180deg;
+  }
+}
+
+@keyframes tail {
+  0%, 100% { transform: translateY(-2em) rotateX(var(--rz, 0deg)) rotate(-60deg); }
+  50% { transform: translateY(-2em) rotateX(var(--rz, 0deg)) rotate(-40deg); }
+body }
