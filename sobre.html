@@ -1,253 +1,114 @@
-<h1>oi eu sou kaio</h1>
-<face>
-    <eyes>
-    </eyes>
-    <eyes>
-    </eyes>
-    <mouth>
-     <lip>
-      <!-- Easter Egg -->
-      Help me,please!
-     </lip>
-    </mouth>
-   </face>
-  <style>* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-   }
-   html {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-   }
-   body {
-    position: relative;
-    background-color: black;
-    overflow: hidden;
-    perspective: 35vh;
-    transform-style: preserve-3d;
-    transform: scale(1.5);
-   }
-   
-   face {
-    display: block;
-    width: 200px;
-    height: 200px;
-    position: relative;
-    animation: face 5s cubic-bezier(0.7, -0.55, 0.3, 1.55) infinite alternate;
-   }
-   
-   eyes {
-    display: block;
-    width: 30%;
-    height: 30%;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 30%;
-    translate: -50% -50%;
-    background-color: white;
-   }
-   
-   eyes::before {
-    content: "";
-    display: block;
-    width: 40%;
-    height: 30%;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    background-color: black;
-   
-    /* The easing curve used here gives the pupil a scaredy tremble */
-    animation: look 5s
-     linear(
-      0 0%,
-      0 2.27%,
-      0.02 4.53%,
-      0.04 6.8%,
-      0.06 9.07%,
-      0.1 11.33%,
-      0.14 13.6%,
-      0.25 18.15%,
-      0.39 22.7%,
-      0.56 27.25%,
-      0.77 31.8%,
-      1 36.35%,
-      0.89 40.9%,
-      0.85 43.18%,
-      0.81 45.45%,
-      0.79 47.72%,
-      0.77 50%,
-      0.75 52.27%,
-      0.75 54.55%,
-      0.75 56.82%,
-      0.77 59.1%,
-      0.79 61.38%,
-      0.81 63.65%,
-      0.85 65.93%,
-      0.89 68.2%,
-      1 72.7%,
-      0.97 74.98%,
-      0.95 77.25%,
-      0.94 79.53%,
-      0.94 81.8%,
-      0.94 84.08%,
-      0.95 86.35%,
-      0.97 88.63%,
-      1 90.9%,
-      0.99 93.18%,
-      0.98 95.45%,
-      0.99 97.73%,
-      1 100%
-     )
-     infinite alternate;
-   }
-   
-   eyes::after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    position: absolute;
-    top: -20%;
-    left: 50%;
-    translate: -50% -50%;
-    background-color: black;
-    animation: blink 10s linear infinite 2s;
-   }
-   
-   eyes:nth-of-type(2) {
-    width: 26%;
-    height: 26%;
-    top: 45%;
-    left: 70%;
-   }
-   
-   mouth {
-    display: block;
-    width: 50px;
-    height: 50px;
-    overflow-x: hidden;
-    position: absolute;
-    position: relative;
-    top: 80%;
-    left: 50%;
-    translate: -50% -50%;
-   }
-   
-   lip {
-    width: 80px;
-    height: 100px;
-    overflow: hidden;
-    position: absolute;
-    top: 0%;
-    left: 50%;
-    translate: -50% -50%;
-    color: transparent;
-    font-size: 4em;
-   
-    /* Using double instead of wavy make it look like teeth chattering */
-    text-decoration-style: wavy;
-    text-decoration-color: #ffffff;
-    text-decoration-line: underline;
-    animation: mouth 0.2s linear infinite;
-   }
-   
-   @keyframes mouth {
-    0% {
-     left: 51%;
-    }
-   
-    100% {
-     left: 49%;
-    }
-   }
-   
-   @keyframes face {
-    0% {
-     transform: rotate3d(1, 1, 0, 20deg);
-    }
-   
-    50% {
-     transform: rotate3d(1, 1, 0, 20deg);
-    }
-   
-    55% {
-     transform: rotate3d(1, 1, 0, -20deg);
-    }
-   
-    100% {
-     transform: rotate3d(1, 1, 0, -20deg);
-    }
-   }
-   
-   @keyframes look {
-    0% {
-     top: 50%;
-     left: 50%;
-    }
-   
-    10% {
-     top: 50%;
-     left: 70%;
-    }
-   
-    40% {
-     top: 50%;
-     left: 70%;
-    }
-   
-    41% {
-     top: 70%;
-     left: 35%;
-    }
-   
-    90% {
-     top: 70%;
-     left: 35%;
-    }
-   
-    100% {
-     top: 50%;
-     left: 50%;
-    }
-   }
-   
-   @keyframes blink {
-    0%,
-    49%,
-    51%,
-    100% {
-     top: -20%;
-    }
-   
-    50% {
-     top: 50%;
-    }
-   }
-   /* 
-   @media (max-width: 1000px) {
-    eyes {
-     left: 35%;
-    }
-   
-    eyes:nth-of-type(2) {
-     left: 65%;
-    }
-   } */
-   /* @media (max-width: 650px) {
-    eyes {
-     left: 30%;
-    }
-   
-    eyes:nth-of-type(2) {
-     left: 70%;
-    }
-   } */
-   </style>
+<div id="controls-container">
+  <button id="toggle-controls">Controls</button>
+  <button id="toggle-fullscreen">Full Screen</button>
+  <div id="controls">
+    <div class="control-group">
+      <label for="colorScheme">Colors:</label>
+      <select id="colorScheme">
+        <option value="rainbow">Rainbow</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="monochrome">Monochrome</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="particleSize">Size:</label>
+      <input type="range" id="particleSize" min="1" max="20" value="10">
+      <span id="particleSizeValue">10</span>
+    </div>
+    <div class="control-group">
+      <label for="particleCount">Particles:</label>
+      <input type="range" id="particleCount" min="10" max="100" value="32">
+      <span id="particleCountValue">32</span>
+    </div>
+    <div class="control-group">
+      <label for="speed">Speed:</label>
+      <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1">
+      <span id="speedValue">1</span>
+    </div>
+    <div class="control-group">
+      <label for="mouseInfluence">Mouse Follow:</label>
+      <input type="range" id="mouseInfluence" min="0" max="100" value="50">
+      <span id="mouseInfluenceValue">50</span>
+    </div>
+  </div>
+</div>
+
+<canvas id="c"></canvas>
+<div id="controls-container">
+  <button id="toggle-controls">Controls</button>
+  <button id="toggle-fullscreen">Full Screen</button>
+  <div id="controls">
+    <div class="control-group">
+      <label for="colorScheme">Colors:</label>
+      <select id="colorScheme">
+        <option value="rainbow">Rainbow</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="monochrome">Monochrome</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="particleSize">Size:</label>
+      <input type="range" id="particleSize" min="1" max="20" value="10">
+      <span id="particleSizeValue">10</span>
+    </div>
+    <div class="control-group">
+      <label for="particleCount">Particles:</label>
+      <input type="range" id="particleCount" min="10" max="100" value="32">
+      <span id="particleCountValue">32</span>
+    </div>
+    <div class="control-group">
+      <label for="speed">Speed:</label>
+      <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1">
+      <span id="speedValue">1</span>
+    </div>
+    <div class="control-group">
+      <label for="mouseInfluence">Mouse Follow:</label>
+      <input type="range" id="mouseInfluence" min="0" max="100" value="50">
+      <span id="mouseInfluenceValue">50</span>
+    </div>
+  </div>
+</div>
+
+<canvas id="c"></canvas>
+<div id="controls-container">
+  <button id="toggle-controls">Controls</button>
+  <button id="toggle-fullscreen">Full Screen</button>
+  <div id="controls">
+    <div class="control-group">
+      <label for="colorScheme">Colors:</label>
+      <select id="colorScheme">
+        <option value="rainbow">Rainbow</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+        <option value="monochrome">Monochrome</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="particleSize">Size:</label>
+      <input type="range" id="particleSize" min="1" max="20" value="10">
+      <span id="particleSizeValue">10</span>
+    </div>
+    <div class="control-group">
+      <label for="particleCount">Particles:</label>
+      <input type="range" id="particleCount" min="10" max="100" value="32">
+      <span id="particleCountValue">32</span>
+    </div>
+    <div class="control-group">
+      <label for="speed">Speed:</label>
+      <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1">
+      <span id="speedValue">1</span>
+    </div>
+    <div class="control-group">
+      <label for="mouseInfluence">Mouse Follow:</label>
+      <input type="range" id="mouseInfluence" min="0" max="100" value="50">
+      <span id="mouseInfluenceValue">50</span>
+    </div>
+  </div>
+</div>
+
+<canvas id="c"></canvas>
